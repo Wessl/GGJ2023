@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (InAir())
+        if (!InAir())
         {
             Rb.AddForce(new Vector3(0, JumpHeight, 0), ForceMode.Impulse);
         }
@@ -82,15 +82,15 @@ public class PlayerController : MonoBehaviour
 
     private bool InAir()
     {
-        Ray ray = new Ray(transform.position, new Vector2(0, -0.55f * transform.lossyScale.y));
+        Ray ray = new Ray(transform.position, new Vector2(0, -0.8f * transform.lossyScale.y));
         RaycastHit hit;
         bool inAir = Physics.Raycast(ray,out hit,int.MaxValue,inAirLayerMaskTest);
 
         if (inAir)
         {
-            return hit.distance > 0;
+            return hit.distance > 0.8f;
         }
-        return true;
+        return false;
     }
 
     public void OnPause(bool pause)
