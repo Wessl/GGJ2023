@@ -52,6 +52,11 @@ public class PlayerController : MonoBehaviour
         Ray ray = new Ray(transform.position, new Vector2(0, -0.55f * transform.lossyScale.y));
         RaycastHit hit;
         bool inAir = Physics.Raycast(ray,out hit,int.MaxValue,inAirLayerMaskTest);
-        return inAir;
-    }
+
+        if (inAir)
+        {
+            return hit.distance > 0;
+        }
+        return true;
+    }   
 }
