@@ -6,24 +6,27 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
+    [Header("General Movement")]
     [SerializeField]
-    private float MovementSpeed;
+    private JumpSettings MyJumpSettings;
     [SerializeField]
-    private float JumpHeight;
+    private MovementSettings MyMovementSettings;
+
     [SerializeField]
     private float Gravity;
     private float currentGravity;
     [SerializeField]
-    private LayerMask inAirLayerMaskTest;
-    [SerializeField]
     private LayerMask onSandLayerMaskTest;
-    [Header("Other")]
-    [SerializeField]
-    private Rigidbody Rb;
-    private float Direction;
 
-    private Vector3 savedVelocity = Vector3.zero;
+    [SerializeField]
+    private LayerMask inAirLayerMaskTest;
+    
+    private float Direction;
+    private bool PressingJump;
+    private bool PressingMovement;
+    private Rigidbody RB;
+
+    //private Vector3 savedVelocity = Vector3.zero;
 
     private SwingerVine swingParent = null;
 
@@ -35,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         anim = GetComponentInChildren<Animator>();
+        RB = GetComponent<Rigidbody>();
     }
 
     public void PlayerHorizontalMovement(InputAction.CallbackContext context)
@@ -42,16 +46,16 @@ public class PlayerController : MonoBehaviour
         if (Manager.IsPaused) return;
 
         Direction = context.ReadValue<float>();
-        float xScale = Mathf.Abs(transform.localScale.x);
-        if (Direction > 0)
-        {
-            transform.localScale = new Vector3(xScale, transform.localScale.y, transform.localScale.z);
-        }
-        else if (Direction < 0)
-        {
-            transform.localScale = new Vector3(-xScale, transform.localScale.y, transform.localScale.z);
 
+        if(Direction != 0)
+        {
+            PressingMovement = true;
         }
+        else
+        {
+            PressingMovement = false;
+        }
+
     }
     public void PlayerJump(InputAction.CallbackContext context)
     {
@@ -62,49 +66,106 @@ public class PlayerController : MonoBehaviour
             ExitSwing();
             return;
         }
-
-        if (InAir())
+        if(!context.ReadValueAsButton())
         {
-            Rb.AddForce(new Vector3(0, JumpHeight, 0), ForceMode.Impulse);
+            PressingJump = false;
+            return;
+        }
+        if(!InAir())
+        {
+            PressingJump = true;
+            RB.useGravity = false;
         }
     }
+
     private void FixedUpdate()
     {
         if (Manager.IsPaused) return;
-        var tempMoveSpeed = MovementSpeed;
+        var tempMoveSpeed = MyMovementSettings.MovementSpeed;
         if (IsOnSand())
         {
             Debug.Log("i am on sand");
-            currentGravity = Gravity; // You can set this to like 60 in order to get stuck to the floor when doing it but it looks kind of hacky
+            //currentGravity = Gravity; // You can set this to like 60 in order to get stuck to the floor when doing it but it looks kind of hacky
             tempMoveSpeed *= 2f;
         }
-        else
-        {
-            currentGravity = Gravity;
-        }
+        // else
+        // {
+        //     currentGravity = Gravity;
+        // }
         if (swingParent != null)
         {
-            UpdateSwingPosition(Time.deltaTime);
+            UpdateSwingPosition(Time.fixedDeltaTime);
+            RB.useGravity = false;
+        }
+
+        float movement = 0;
+        if (PressingMovement)
+        {
+            MyMovementSettings.MovementT = Mathf.Min(MyMovementSettings.MovementT + Time.deltaTime, 1);
         }
         else
         {
-            Rb.velocity = new Vector3(Direction * tempMoveSpeed, Rb.velocity.y, 0);
-            if (InAir())
+            MyMovementSettings.MovementT = Mathf.Max(MyMovementSettings.MovementT - (Time.deltaTime * 4), 0);
+        }
+       
+        movement = Direction * MyMovementSettings.Movement.Evaluate(MyMovementSettings.MovementT) * tempMoveSpeed;
+
+        float jump = 0;
+        float jumpDirection = 0;
+        if(MyJumpSettings.JumpT == 1 && !swingParent)
+        {
+            PressingJump = false;
+            MyJumpSettings.JumpT = 0;
+            RB.useGravity = true;
+        }
+        if (PressingJump)
+        {
+            MyJumpSettings.JumpT = Mathf.Min(MyJumpSettings.JumpT + Time.deltaTime * 2, 1);
+            if(MyJumpSettings.JumpT <= 0.5f)
             {
-                Rb.AddForce(new Vector3(0, -currentGravity, 0));
+                jumpDirection = 1;
+            }
+            else
+            {
+                jumpDirection = -1;
+            }
+        }
+        else
+        {
+            MyJumpSettings.JumpT = Mathf.Max(MyJumpSettings.JumpT - (Time.deltaTime * 4), 0);
+            jumpDirection = -1;
+            if(MyJumpSettings.JumpT == 0 && !swingParent)
+            {
+                RB.useGravity = true;
             }
         }
 
-        if(anim != null) anim.SetFloat("VelocityX", Mathf.Abs(Rb.velocity.x));
-        if(anim != null) anim.SetFloat("VelocityY", Rb.velocity.y);
+        if(anim != null) anim.SetFloat("VelocityX", Mathf.Abs(RB.velocity.x));
+        if(anim != null) anim.SetFloat("VelocityY", RB.velocity.y);
 
+        jump = jumpDirection * MyJumpSettings.Jump.Evaluate(MyJumpSettings.JumpT) * MyJumpSettings.JumpHeight;
 
+        if(jump > 0)
+        {
+            RB.AddForce(new Vector3(movement - RB.velocity.x, jump - RB.velocity.y, 0));
+        }
+        else
+        {
+            RB.AddForce(new Vector3(movement - RB.velocity.x, 0, 0));
+        }
 
     }
 
     private void UpdateSwingPosition(float delta)
     {
-        transform.position = Vector3.Lerp(transform.position, swingParent.GetSwingWorldPosition() - swingPositionOffset.localPosition, delta * 12.0f);
+        transform.position = swingParent.GetSwingWorldPosition() - swingPositionOffset.localPosition;//Vector3.Lerp(transform.position, swingParent.GetSwingWorldPosition() - swingPositionOffset.localPosition, delta * 12.0f);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Ray ray = new Ray(transform.position + (Vector3.down * transform.lossyScale.y * 1.84f), Vector3.down);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(ray);
     }
 
     private bool IsOnSand()
@@ -122,35 +183,35 @@ public class PlayerController : MonoBehaviour
 
         private bool InAir()
     {
-        Ray ray = new Ray(transform.position, new Vector2(0, -0.55f * transform.lossyScale.y));
+        Ray ray = new Ray(transform.position + (Vector3.down * transform.lossyScale.y * 1.84f), Vector3.down); //very magical number :))
         RaycastHit hit;
-        bool inAir = Physics.Raycast(ray, out hit, int.MaxValue, inAirLayerMaskTest);
+        bool inAir = Physics.Raycast(ray, out hit, MyJumpSettings.InAirTestOffset, inAirLayerMaskTest);
 
-        if (inAir)
+        if (!hit.collider)
         {
-            return hit.distance > 0;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void OnPause(bool pause)
     {
         if (pause)
         {
-            if (Rb.velocity != Vector3.zero)
-            {
-                savedVelocity = Rb.velocity;
-                Rb.velocity = Vector3.zero;
-            }
+            //if (Rb.velocity != Vector3.zero)
+            //{
+            //    savedVelocity = Rb.velocity;
+            //    Rb.velocity = Vector3.zero;
+            //}
         }
         else
         {
-            if (savedVelocity != Vector3.zero)
-            {
-                Rb.velocity = savedVelocity;
-                savedVelocity = Vector3.zero;
-            }
-        }
+            //if (savedVelocity != Vector3.zero)
+            //{
+            //    Rb.velocity = savedVelocity;
+            //    savedVelocity = Vector3.zero;
+            //}
+        }        
     }
 
     public void EnterSwing(SwingerVine swingParent)
@@ -163,7 +224,28 @@ public class PlayerController : MonoBehaviour
         if (swingParent != null)
         {
             swingParent.Exit();
+            RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
+            RB.AddForce(swingParent.lerpFlipFlop ? Vector3.right : Vector3.left);
             swingParent = null;
         }
+    }
+
+    [System.Serializable]
+    struct JumpSettings
+    {
+        public AnimationCurve Jump;
+        public float JumpHeight;
+        //[HideInInspector]
+        public float JumpT;
+        public float InAirTestOffset;
+    }
+
+    [System.Serializable]
+    struct MovementSettings
+    {
+        public AnimationCurve Movement;
+        public float MovementSpeed;
+        //[HideInInspector]
+        public float MovementT;
     }
 }
