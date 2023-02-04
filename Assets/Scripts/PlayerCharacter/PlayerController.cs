@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private float Direction;
     public void PlayerHorizontalMovement(InputAction.CallbackContext context)
     {
+        if (Manager.IsPaused) return;
+
         Direction = context.ReadValue<float>();
         float xScale = Mathf.Abs(transform.localScale.x);
         if (Direction > 0)
@@ -34,13 +36,17 @@ public class PlayerController : MonoBehaviour
     }
     public void PlayerJump(InputAction.CallbackContext context)
     {
-        if(InAir())
+        if (Manager.IsPaused) return;
+
+        if (InAir())
         {
             Rb.AddForce(new Vector3(0,JumpHeight,0),ForceMode.Impulse);
         }
     }
     private void FixedUpdate()
     {
+        if (Manager.IsPaused) return;
+
         Rb.velocity = new Vector3(Direction * MovementSpeed, Rb.velocity.y, 0);
         if (InAir())
         {
