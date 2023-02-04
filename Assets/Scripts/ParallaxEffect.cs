@@ -27,7 +27,7 @@ public class ParallaxEffect : MonoBehaviour
         {
             StartPos += Length;
         }
-        else if(temp > StartPos - (Length / 2))
+        else if(temp < StartPos - (Length / 2))
         {
             StartPos -= Length;
         }
