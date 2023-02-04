@@ -12,8 +12,11 @@ public class PlayerController : MonoBehaviour
     private float JumpHeight;
     [SerializeField]
     private float Gravity;
+    private float currentGravity;
     [SerializeField]
     private LayerMask inAirLayerMaskTest;
+    [SerializeField]
+    private LayerMask onSandLayerMaskTest;
     [Header("Other")]
     [SerializeField]
     private Rigidbody Rb;
@@ -60,19 +63,33 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if (Manager.IsPaused) return;
-
+        var tempMoveSpeed = MovementSpeed;
+        if (IsOnSand())
+        {
+            Debug.Log("i am on sand");
+            currentGravity = Gravity; // You can set this to like 60 in order to get stuck to the floor when doing it but it looks kind of hacky
+            tempMoveSpeed *= 2f;
+        }
+        else
+        {
+            currentGravity = Gravity;
+        }
         if (swingParent != null)
         {
             UpdateSwingPosition(Time.deltaTime);
         }
         else
         {
-            Rb.velocity = new Vector3(Direction * MovementSpeed, Rb.velocity.y, 0);
+            Rb.velocity = new Vector3(Direction * tempMoveSpeed, Rb.velocity.y, 0);
             if (InAir())
             {
-                Rb.AddForce(new Vector3(0, -Gravity, 0));
+                Rb.AddForce(new Vector3(0, -currentGravity, 0));
             }
         }
+       
+        
+ 
+        
     }
 
     private void UpdateSwingPosition(float delta)
@@ -80,7 +97,15 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, swingParent.GetSwingWorldPosition() - swingPositionOffset.localPosition, delta * 12.0f);
     }
 
-    private bool InAir()
+    private bool IsOnSand()
+    {
+        Ray ray = new Ray(transform.position, new Vector2(0, -0.55f * transform.lossyScale.y));
+        RaycastHit hit;
+        bool onSand = Physics.Raycast(ray, out hit, int.MaxValue, onSandLayerMaskTest);
+        return onSand;
+    }
+
+        private bool InAir()
     {
         Ray ray = new Ray(transform.position, new Vector2(0, -0.55f * transform.lossyScale.y));
         RaycastHit hit;
