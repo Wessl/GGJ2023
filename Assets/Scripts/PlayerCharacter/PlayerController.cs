@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if(anim != null) anim.SetFloat("VelocityX", Mathf.Abs(Rb.velocity.x));
+        if(anim != null) anim.SetFloat("VelocityY", Rb.velocity.y);
 
 
 
