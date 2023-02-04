@@ -62,13 +62,6 @@ public class EnemyBound : MonoBehaviour
         
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(homePosition, jumpPowerRange.x);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(homePosition, jumpPowerRange.y);
-    }
 
     bool IsGrounded()
     {
