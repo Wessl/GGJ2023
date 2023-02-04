@@ -58,7 +58,7 @@ public class EnemyBound : MonoBehaviour
 
     private void OnGUI()
     {
-        GUI.TextField(new Rect(200f, 200f, 200f, 200f), actionState.ToString() + "\n " + (timeSinceLastJump - Time.time));
+        //GUI.TextField(new Rect(200f, 200f, 200f, 200f), actionState.ToString() + "\n " + (timeSinceLastJump - Time.time));
         
     }
 

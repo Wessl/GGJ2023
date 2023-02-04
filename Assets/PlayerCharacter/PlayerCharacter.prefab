@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1923448645}
   - component: {fileID: 1923448644}
   - component: {fileID: 1923448647}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 261085815997371495}
   - component: {fileID: 6079191029243924667}
   - component: {fileID: 261085815997371492}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: PlayerCharacter
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -336,36 +336,45 @@ MonoBehaviour:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 2
-        outSlope: 2
+        time: 0.0011749268
+        value: 1.0009766
+        inSlope: 0.120857134
+        outSlope: 0.120857134
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.44155294
       - serializedVersion: 3
-        time: 0.5
-        value: 1
-        inSlope: 0
-        outSlope: 0
+        time: 0.36969218
+        value: 0.96574086
+        inSlope: -0.8141942
+        outSlope: -0.8141942
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.13968253
+        outWeight: 0.33333334
       - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: -3.3965192
-        outSlope: -3.3965192
+        time: 0.4189148
+        value: 0.77542686
+        inSlope: 0.020565553
+        outSlope: 0.020565553
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.07301593
+        inWeight: 0.10840715
+        outWeight: 0.17387879
+      - serializedVersion: 3
+        time: 0.7508545
+        value: 1.0019531
+        inSlope: -4.549833
+        outSlope: -4.549833
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.036169525
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    JumpHeight: 15
+    JumpHeight: 7
     JumpT: 0
     InAirTestOffset: 0.2
   MyMovementSettings:
@@ -375,12 +384,12 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0.9
-        inSlope: 0
-        outSlope: 0
+        inSlope: 0.24360037
+        outSlope: 0.24360037
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.08365098
       - serializedVersion: 3
         time: 0.56925875
         value: 1
@@ -402,8 +411,12 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    MovementSpeed: 10
+    MovementSpeed: 11
     MovementT: 0
+  Gravity: 0
+  onSandLayerMaskTest:
+    serializedVersion: 2
+    m_Bits: 64
   inAirLayerMaskTest:
     serializedVersion: 2
     m_Bits: 1
@@ -433,7 +446,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 120
@@ -449,7 +462,8 @@ GameObject:
   - component: {fileID: 3384241591987533184}
   - component: {fileID: 2576268191287224457}
   - component: {fileID: 205722654}
-  m_Layer: 0
+  - component: {fileID: 1238376839}
+  m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,6 +553,26 @@ MonoBehaviour:
   smoothSwingSpeedScale: 13
   smoothSwingMaxSpeed: 2
   flipFlopThreashold: 1
+--- !u!95 &1238376839
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676037308248597030}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fd0a5cca27fea0f43878b883b0a4d432, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7642008636004349446
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,7 +582,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5465213550719408351}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SwingOffset
   m_TagString: Untagged
   m_Icon: {fileID: 0}

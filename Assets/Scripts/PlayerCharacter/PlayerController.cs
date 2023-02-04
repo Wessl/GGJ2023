@@ -35,126 +35,167 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform swingPositionOffset;
 
-    private void Start()
+    private Rigidbody rb;
+
+    private float gravity = 3.0f * 9.82f;
+    private float xSpeed = 7.0f;
+    private float targetX = 0.0f;
+    private float velocityX = 0.0f;
+
+    void Start()
     {
+        rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
-        RB = GetComponent<Rigidbody>();
     }
 
     public void PlayerHorizontalMovement(InputAction.CallbackContext context)
     {
-        if (Manager.IsPaused) return;
 
-        Direction = context.ReadValue<float>();
-
-        if(Direction != 0)
-        {
-            PressingMovement = true;
-        }
-        else
-        {
-            PressingMovement = false;
-        }
-
+        targetX = context.ReadValue<float>() * xSpeed;
     }
+
     public void PlayerJump(InputAction.CallbackContext context)
     {
-        if (Manager.IsPaused) return;
-
-        if (swingParent)
-        {
-            ExitSwing();
-            return;
-        }
-        if(!context.ReadValueAsButton())
-        {
-            PressingJump = false;
-            return;
-        }
         if(!InAir())
         {
-            PressingJump = true;
-            RB.useGravity = false;
+            rb.velocity = new Vector3(rb.velocity.x, 0.4f * gravity, rb.velocity.z);
         }
     }
 
     private void FixedUpdate()
     {
-        if (Manager.IsPaused) return;
-        var tempMoveSpeed = MyMovementSettings.MovementSpeed;
-        if (IsOnSand())
-        {
-            Debug.Log("i am on sand");
-            //currentGravity = Gravity; // You can set this to like 60 in order to get stuck to the floor when doing it but it looks kind of hacky
-            tempMoveSpeed *= 2f;
-        }
-        // else
-        // {
-        //     currentGravity = Gravity;
-        // }
-        if (swingParent != null)
-        {
-            UpdateSwingPosition(Time.fixedDeltaTime);
-            RB.useGravity = false;
-        }
+        velocityX = Mathf.Lerp(velocityX, targetX, 13.0f * Time.fixedDeltaTime);
+        //targetX = Mathf.Lerp(targetX, 0.0f, 0.1f);
+        float g = rb.velocity.y > 0.0f ? gravity : gravity * 1.876f;
+        rb.velocity = new Vector3(velocityX, rb.velocity.y - g * Time.fixedDeltaTime, rb.velocity.z);
 
-        float movement = 0;
-        if (PressingMovement)
-        {
-            MyMovementSettings.MovementT = Mathf.Min(MyMovementSettings.MovementT + Time.deltaTime, 1);
-        }
-        else
-        {
-            MyMovementSettings.MovementT = Mathf.Max(MyMovementSettings.MovementT - (Time.deltaTime * 4), 0);
-        }
-       
-        movement = Direction * MyMovementSettings.Movement.Evaluate(MyMovementSettings.MovementT) * tempMoveSpeed;
 
-        float jump = 0;
-        float jumpDirection = 0;
-        if(MyJumpSettings.JumpT == 1 && !swingParent)
-        {
-            PressingJump = false;
-            MyJumpSettings.JumpT = 0;
-            RB.useGravity = true;
-        }
-        if (PressingJump)
-        {
-            MyJumpSettings.JumpT = Mathf.Min(MyJumpSettings.JumpT + Time.deltaTime * 2, 1);
-            if(MyJumpSettings.JumpT <= 0.5f)
-            {
-                jumpDirection = 1;
-            }
-            else
-            {
-                jumpDirection = -1;
-            }
-        }
-        else
-        {
-            MyJumpSettings.JumpT = Mathf.Max(MyJumpSettings.JumpT - (Time.deltaTime * 4), 0);
-            jumpDirection = -1;
-            if(MyJumpSettings.JumpT == 0 && !swingParent)
-            {
-                RB.useGravity = true;
-            }
-        }
+        if (anim != null) anim.SetFloat("VelocityX", Mathf.Abs(rb.velocity.x));
+        if (anim != null) anim.SetFloat("VelocityY", rb.velocity.y);
 
-        if(anim != null) anim.SetFloat("VelocityX", Mathf.Abs(RB.velocity.x));
-        if(anim != null) anim.SetFloat("VelocityY", RB.velocity.y);
-
-        jump = jumpDirection * MyJumpSettings.Jump.Evaluate(MyJumpSettings.JumpT) * MyJumpSettings.JumpHeight;
-
-        if(jump > 0)
-        {
-            RB.AddForce(new Vector3(movement - RB.velocity.x, jump - RB.velocity.y, 0));
-        }
-        else
-        {
-            RB.AddForce(new Vector3(movement - RB.velocity.x, 0, 0));
-        }
 
     }
+
+    //private void Start()
+    //{
+    //    anim = GetComponentInChildren<Animator>();
+    //    RB = GetComponent<Rigidbody>();
+    //}
+
+    //public void PlayerHorizontalMovement(InputAction.CallbackContext context)
+    //{
+    //    if (Manager.IsPaused) return;
+
+    //    Direction = context.ReadValue<float>();
+
+    //    if(Direction != 0)
+    //    {
+    //        PressingMovement = true;
+    //    }
+    //    else
+    //    {
+    //        PressingMovement = false;
+    //    }
+
+    //}
+    //public void PlayerJump(InputAction.CallbackContext context)
+    //{
+    //    if (Manager.IsPaused) return;
+
+    //    if (swingParent)
+    //    {
+    //        ExitSwing();
+    //        return;
+    //    }
+    //    if(!context.ReadValueAsButton())
+    //    {
+    //        PressingJump = false;
+    //        return;
+    //    }
+    //    if(!InAir())
+    //    {
+    //        PressingJump = true;
+    //        RB.useGravity = false;
+    //    }
+    //}
+
+    //private void FixedUpdate()
+    //{
+    //    if (Manager.IsPaused) return;
+    //    var tempMoveSpeed = MyMovementSettings.MovementSpeed;
+    //    if (IsOnSand())
+    //    {
+    //        Debug.Log("i am on sand");
+    //        //currentGravity = Gravity; // You can set this to like 60 in order to get stuck to the floor when doing it but it looks kind of hacky
+    //        tempMoveSpeed *= 2f;
+    //    }
+    //    // else
+    //    // {
+    //    //     currentGravity = Gravity;
+    //    // }
+    //    if (swingParent != null)
+    //    {
+    //        UpdateSwingPosition(Time.fixedDeltaTime);
+    //        RB.useGravity = false;
+    //    }
+
+    //    float movement = 0;
+    //    if (PressingMovement)
+    //    {
+    //        MyMovementSettings.MovementT = Mathf.Min(MyMovementSettings.MovementT + Time.deltaTime, 1);
+    //    }
+    //    else
+    //    {
+    //        MyMovementSettings.MovementT = Mathf.Max(MyMovementSettings.MovementT - (Time.deltaTime * 4), 0);
+    //    }
+
+    //    movement = Direction * MyMovementSettings.Movement.Evaluate(MyMovementSettings.MovementT) * tempMoveSpeed;
+
+    //    float jump = 0;
+    //    float jumpDirection = 0;
+    //    if(MyJumpSettings.JumpT == 1 && !swingParent)
+    //    {
+    //        PressingJump = false;
+    //        MyJumpSettings.JumpT = 0;
+    //        RB.useGravity = true;
+    //    }
+    //    if (PressingJump)
+    //    {
+    //        MyJumpSettings.JumpT = Mathf.Min(MyJumpSettings.JumpT + Time.deltaTime * 2, 1);
+    //        if (MyJumpSettings.JumpT <= 0.5f)
+    //        {
+    //            jumpDirection = 1;
+    //        }
+    //        else
+    //        {
+    //            jumpDirection = -1;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        MyJumpSettings.JumpT = Mathf.Max(MyJumpSettings.JumpT - (Time.deltaTime * 4), 0);
+    //        jumpDirection = -1;
+    //        if (MyJumpSettings.JumpT == 0 && !swingParent)
+    //        {
+    //            RB.useGravity = true;
+    //        }
+    //    }
+
+    //    if(anim != null) anim.SetFloat("VelocityX", Mathf.Abs(RB.velocity.x));
+    //    if(anim != null) anim.SetFloat("VelocityY", RB.velocity.y);
+
+    //    jump = jumpDirection * MyJumpSettings.Jump.Evaluate(MyJumpSettings.JumpT) * MyJumpSettings.JumpHeight;
+
+    //    if(jump > 0)
+    //    {
+    //        RB.AddForce(new Vector3(movement - RB.velocity.x, jump - RB.velocity.y, 0));
+    //    }
+    //    else
+    //    {
+    //        RB.AddForce(new Vector3(movement - RB.velocity.x, 0, 0));
+    //    }
+
+    //}
 
     private void UpdateSwingPosition(float delta)
     {
