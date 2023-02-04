@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 756445809}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CollisonPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1886945950}
   - component: {fileID: 1886945951}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 5901814567934030407}
   - component: {fileID: 5901814567934030406}
   - component: {fileID: 6784258189224822702}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Swinger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5901814569657454821}
   - component: {fileID: 5901814569657454820}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SwingerTemp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
