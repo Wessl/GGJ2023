@@ -1,3 +1,4 @@
+using Microsoft.Cci;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -108,9 +109,14 @@ public class PlayerController : MonoBehaviour
     private bool IsOnSand()
     {
         Ray ray = new Ray(transform.position, new Vector2(0, -0.55f * transform.lossyScale.y));
+        
         RaycastHit hit;
         bool onSand = Physics.Raycast(ray, out hit, int.MaxValue, onSandLayerMaskTest);
-        return onSand;
+        if (onSand)
+        {
+            return hit.distance > 0;
+        }
+        return true;
     }
 
         private bool InAir()
