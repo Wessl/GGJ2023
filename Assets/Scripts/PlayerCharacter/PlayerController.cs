@@ -26,8 +26,15 @@ public class PlayerController : MonoBehaviour
 
     private SwingerVine swingParent = null;
 
+    private Animator anim;
+
     [SerializeField]
     private Transform swingPositionOffset;
+
+    private void Start()
+    {
+        anim = GetComponentInChildren<Animator>();
+    }
 
     public void PlayerHorizontalMovement(InputAction.CallbackContext context)
     {
@@ -86,10 +93,11 @@ public class PlayerController : MonoBehaviour
                 Rb.AddForce(new Vector3(0, -currentGravity, 0));
             }
         }
-       
-        
- 
-        
+
+        if(anim != null) anim.SetFloat("VelocityX", Mathf.Abs(Rb.velocity.x));
+
+
+
     }
 
     private void UpdateSwingPosition(float delta)
