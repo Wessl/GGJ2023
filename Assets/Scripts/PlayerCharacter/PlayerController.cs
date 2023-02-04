@@ -20,6 +20,12 @@ public class PlayerController : MonoBehaviour
     private float Direction;
 
     private Vector3 savedVelocity = Vector3.zero;
+
+    private SwingerVine swingParent = null;
+
+    [SerializeField]
+    private Transform swingPositionOffset;
+
     public void PlayerHorizontalMovement(InputAction.CallbackContext context)
     {
         if (Manager.IsPaused) return;
@@ -40,6 +46,12 @@ public class PlayerController : MonoBehaviour
     {
         if (Manager.IsPaused) return;
 
+        if (swingParent)
+        {
+            ExitSwing();
+            return;
+        }
+
         if (InAir())
         {
             Rb.AddForce(new Vector3(0, JumpHeight, 0), ForceMode.Impulse);
@@ -49,12 +61,25 @@ public class PlayerController : MonoBehaviour
     {
         if (Manager.IsPaused) return;
 
-        Rb.velocity = new Vector3(Direction * MovementSpeed, Rb.velocity.y, 0);
-        if (InAir())
+        if (swingParent != null)
         {
-            Rb.AddForce(new Vector3(0, -Gravity, 0));
+            UpdateSwingPosition(Time.deltaTime);
+        }
+        else
+        {
+            Rb.velocity = new Vector3(Direction * MovementSpeed, Rb.velocity.y, 0);
+            if (InAir())
+            {
+                Rb.AddForce(new Vector3(0, -Gravity, 0));
+            }
         }
     }
+
+    private void UpdateSwingPosition(float delta)
+    {
+        transform.position = Vector3.Lerp(transform.position, swingParent.GetSwingWorldPosition() - swingPositionOffset.localPosition, delta * 12.0f);
+    }
+
     private bool InAir()
     {
         Ray ray = new Ray(transform.position, new Vector2(0, -0.55f * transform.lossyScale.y));
@@ -86,5 +111,19 @@ public class PlayerController : MonoBehaviour
                 savedVelocity = Vector3.zero;
             }
         }        
+    }
+
+    public void EnterSwing(SwingerVine swingParent)
+    {
+        this.swingParent = swingParent;
+    }
+
+    private void ExitSwing()
+    {
+        if (swingParent != null)
+        {
+            swingParent.Exit();
+            swingParent = null;
+        }
     }
 }
