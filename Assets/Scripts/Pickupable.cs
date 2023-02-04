@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Pickupable : MonoBehaviour
 {
-    
+    AudioManager audioManager;
+    AcornDisplay acornDisplay;
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioManager = FindObjectOfType<AudioManager>();
+        acornDisplay = FindObjectOfType<AcornDisplay>();
     }
 
     // Update is called once per frame
@@ -21,7 +23,8 @@ public class Pickupable : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             // You pick me up
-            GameObject.FindObjectOfType<AcornDisplay>().UpdateDisplay(1);
+            acornDisplay.UpdateDisplay(1);
+            audioManager.PlaySound();
             Destroy(gameObject);
         }
     }
