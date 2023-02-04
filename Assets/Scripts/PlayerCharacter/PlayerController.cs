@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Rigidbody Rb;
     private float Direction;
+
+    private Vector3 savedVelocity = Vector3.zero;
     public void PlayerHorizontalMovement(InputAction.CallbackContext context)
     {
         if (Manager.IsPaused) return;
@@ -28,7 +30,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector3(xScale, transform.localScale.y, transform.localScale.z);
         }
-        else if(Direction < 0)
+        else if (Direction < 0)
         {
             transform.localScale = new Vector3(-xScale, transform.localScale.y, transform.localScale.z);
 
@@ -40,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
         if (InAir())
         {
-            Rb.AddForce(new Vector3(0,JumpHeight,0),ForceMode.Impulse);
+            Rb.AddForce(new Vector3(0, JumpHeight, 0), ForceMode.Impulse);
         }
     }
     private void FixedUpdate()
@@ -50,14 +52,34 @@ public class PlayerController : MonoBehaviour
         Rb.velocity = new Vector3(Direction * MovementSpeed, Rb.velocity.y, 0);
         if (InAir())
         {
-            Rb.AddForce(new Vector3(0, -Gravity, 0)); 
+            Rb.AddForce(new Vector3(0, -Gravity, 0));
         }
     }
     private bool InAir()
     {
         Ray ray = new Ray(transform.position, new Vector2(0, -0.55f * transform.lossyScale.y));
         RaycastHit hit;
-        bool inAir = Physics.Raycast(ray,out hit,int.MaxValue,inAirLayerMaskTest);
+        bool inAir = Physics.Raycast(ray, out hit, int.MaxValue, inAirLayerMaskTest);
         return inAir;
+    }
+
+    public void OnPause(bool pause)
+    {
+        if(pause)
+        {
+            if (Rb.velocity != Vector3.zero)
+            {
+                savedVelocity = Rb.velocity;
+                Rb.velocity = Vector3.zero;
+            }
+        }
+        else
+        {
+            if (savedVelocity != Vector3.zero)
+            {
+                Rb.velocity = savedVelocity;
+                savedVelocity = Vector3.zero;
+            }
+        }        
     }
 }
