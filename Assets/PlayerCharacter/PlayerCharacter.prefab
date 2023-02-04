@@ -304,6 +304,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: f28aaec3-6f84-4ca6-ad56-8fbadca6476a
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 35345a5c-e6b1-4af5-8eb3-7fa5ff786b36
+    m_ActionName: Game/Pause[/Keyboard/p]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5264c568-3449-4f9a-8a6c-a6d327b2f558
+    m_ActionName: Game/Restart[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -341,7 +349,7 @@ CapsuleCollider:
   m_Radius: 0.73
   m_Height: 3.86
   m_Direction: 1
-  m_Center: {x: -0.05, y: 0, z: 0}
+  m_Center: {x: -0.05, y: 0.33, z: 0}
 --- !u!54 &261085815997371492
 Rigidbody:
   m_ObjectHideFlags: 0

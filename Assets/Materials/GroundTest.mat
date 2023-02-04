@@ -35,9 +35,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _GradientScale: 11.35
+    - _HighLightSize: 0.45
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
+    - _HighLightColor: {r: 0.7924528, g: 0.317213, b: 0, a: 0}
+    - _HighLightTint: {r: 0.15006168, g: 0.03751542, b: 0.020698164, a: 0}
     - _Higher_Ground_Colour: {r: 0.0009803922, g: 0.03333334, b: 0, a: 0}
     - _Lower_Ground_Colour: {r: 0.047169805, g: 0.022559471, b: 0, a: 1}
     - _Second_Higher_Ground_Colour: {r: 0.005271926, g: 0.1792453, b: 0, a: 0}
