@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,11 +12,8 @@ public class PlayerController : MonoBehaviour
     private float JumpHeight;
     [SerializeField]
     private float Gravity;
-    private float currentGravity;   
     [SerializeField]
     private LayerMask inAirLayerMaskTest;
-    [SerializeField]
-    private LayerMask onSandLayerMaskTest;
     [Header("Other")]
     [SerializeField]
     private Rigidbody Rb;
@@ -88,7 +84,7 @@ public class PlayerController : MonoBehaviour
     {
         Ray ray = new Ray(transform.position, new Vector2(0, -0.55f * transform.lossyScale.y));
         RaycastHit hit;
-        bool inAir = Physics.Raycast(ray,out hit,int.MaxValue,inAirLayerMaskTest);
+        bool inAir = Physics.Raycast(ray, out hit, int.MaxValue, inAirLayerMaskTest);
 
         if (inAir)
         {
@@ -99,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnPause(bool pause)
     {
-        if(pause)
+        if (pause)
         {
             if (Rb.velocity != Vector3.zero)
             {
@@ -114,7 +110,7 @@ public class PlayerController : MonoBehaviour
                 Rb.velocity = savedVelocity;
                 savedVelocity = Vector3.zero;
             }
-        }        
+        }
     }
 
     public void EnterSwing(SwingerVine swingParent)
