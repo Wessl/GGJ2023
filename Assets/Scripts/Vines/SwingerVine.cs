@@ -5,7 +5,8 @@ using UnityEngine;
 public class SwingerVine : MonoBehaviour
 {
     private float angle = 0.0f;
-    private bool lerpFlipFlop = true;
+    [HideInInspector]
+    public bool lerpFlipFlop = true;
     private float smoothSwingRange = 25.0f;
 
 
@@ -66,6 +67,8 @@ public class SwingerVine : MonoBehaviour
         if (!collider.enabled && exitTime + exitDuration <= Time.time && exitTime > 0.0f)
         {
             collider.enabled = true;
+            smoothSwingRange = 25;
+            smoothSwingSpeedScale = 3.2f;
             exitTime = -10.0f;
         }
 
@@ -85,6 +88,8 @@ public class SwingerVine : MonoBehaviour
     private void StartSwing(PlayerController player)
     {
         collider.enabled = false;
+        smoothSwingRange = 50;
+        smoothSwingSpeedScale = 6;
         player.EnterSwing(this);
 
     }
