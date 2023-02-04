@@ -21,7 +21,7 @@ public class Pickupable : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             // You pick me up
-            GameObject.FindObjectOfType<AcornDisplay>().;
+            GameObject.FindObjectOfType<AcornDisplay>().UpdateDisplay(1);
             Destroy(gameObject);
         }
     }
