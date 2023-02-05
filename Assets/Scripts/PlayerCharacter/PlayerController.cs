@@ -84,7 +84,8 @@ public class PlayerController : MonoBehaviour
                 UpdateSwingPosition(Time.fixedDeltaTime);
             }
             return;
-        } 
+        }
+        if (GetComponentInChildren<Animator>().GetBool("Dead")) return;
 
         if (targetX < 0.0f)
         {
