@@ -38,6 +38,9 @@ public class PlayerController : MonoBehaviour
 
     private SpriteRenderer FlipSprite;
 
+    float xSpeedMultiplier = 1.0f;
+    float targetXSpeedMultiplier = 1.0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -92,16 +95,18 @@ public class PlayerController : MonoBehaviour
             FlipSprite.flipX = false;
         }
 
-        float xSpeedMultiplier = 1.0f;
+
+        targetXSpeedMultiplier = 1.0f;
         if (IsOnSand())
         {
-            xSpeedMultiplier = MyMovementSettings.SandBoostMultiplier;
+            targetXSpeedMultiplier = MyMovementSettings.SandBoostMultiplier;
         }
 
         float velocityY = rb.velocity.y;
         if (swingParent != null)
         {
             xSpeedMultiplier = 0.0f;
+            targetXSpeedMultiplier = 0.0f;
             UpdateSwingPosition(Time.fixedDeltaTime);
         }
         else
@@ -110,6 +115,8 @@ public class PlayerController : MonoBehaviour
             velocityY -= currentGravity * Time.fixedDeltaTime;
         }
 
+
+        xSpeedMultiplier = Mathf.Lerp(xSpeedMultiplier, targetXSpeedMultiplier, 3.0f * Time.fixedDeltaTime);
         velocityX = Mathf.Lerp(velocityX, targetX * xSpeedMultiplier, 10.0f * Time.fixedDeltaTime);
         rb.velocity = new Vector3(velocityX, velocityY, 0f);
 

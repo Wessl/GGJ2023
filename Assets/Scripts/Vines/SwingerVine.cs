@@ -70,7 +70,7 @@ public class SwingerVine : MonoBehaviour
             }
         }
 
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        transform.localRotation = Quaternion.Euler(0, 0, angle);
 
 
         if (!collider.enabled && exitTime + exitDuration <= Time.time && exitTime > 0.0f)

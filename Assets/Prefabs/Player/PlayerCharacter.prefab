@@ -326,7 +326,7 @@ MonoBehaviour:
     InAirTestOffset: 0.2
   MyMovementSettings:
     MovementSpeed: 7
-    SandBoostMultiplier: 2
+    SandBoostMultiplier: 2.6
   gravity: 29.46
   onSandLayerMaskTest:
     serializedVersion: 2
@@ -335,6 +335,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   swingPositionOffset: {fileID: 5465213550719408351}
+  pauseEffect: {fileID: 0}
 --- !u!136 &6079191029243924667
 CapsuleCollider:
   m_ObjectHideFlags: 0
