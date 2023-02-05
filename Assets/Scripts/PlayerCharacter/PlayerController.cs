@@ -189,7 +189,7 @@ public class PlayerController : MonoBehaviour
     public void EnterSwing(SwingerVine swingParent)
     {
         if (swingParent != null) {
-            ExitSwing()
+            swingParent.Exit();
         }
 
         this.swingParent = swingParent;
