@@ -3099,10 +3099,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyJumping
       objectReference: {fileID: 0}
-    - target: {fileID: 522981299992402882, guid: ebef74b4ff4229244a5d871609a0f8d0, type: 3}
-      propertyPath: spriteChangeCooldown
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 522981299992402910, guid: ebef74b4ff4229244a5d871609a0f8d0, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -3147,8 +3143,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 522981299992402909, guid: ebef74b4ff4229244a5d871609a0f8d0, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ebef74b4ff4229244a5d871609a0f8d0, type: 3}
 --- !u!1001 &2536175896110670715
 PrefabInstance:
