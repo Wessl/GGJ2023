@@ -1193,6 +1193,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 261085815997371495, guid: c96aaffd840b024418bb9077335ffae2, type: 3}
+      propertyPath: pauseEffect
+      value: 
+      objectReference: {fileID: 1656850164}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c96aaffd840b024418bb9077335ffae2, type: 3}
 --- !u!1001 &203738831
@@ -8133,6 +8137,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4813434158152440303, guid: d01a764ab5adada4aaf10500178fcc82, type: 3}
   m_PrefabInstance: {fileID: 1639154998}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1656850164 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5592939305499377851, guid: 20a76d2721077194c86678e0f2cf995b, type: 3}
+  m_PrefabInstance: {fileID: 1764528763}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1662181229 stripped
 Transform:
