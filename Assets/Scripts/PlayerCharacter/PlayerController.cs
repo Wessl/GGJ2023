@@ -12,51 +12,43 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private MovementSettings MyMovementSettings;
 
-    [SerializeField]
-    private float Gravity;
-    private float currentGravity;
+    [SerializeField] 
+    private float gravity = 3.0f * 9.82f;
+
     [SerializeField]
     private LayerMask onSandLayerMaskTest;
 
     [SerializeField]
     private LayerMask inAirLayerMaskTest;
-    
-    private float Direction;
-    private bool PressingJump;
-    private bool PressingMovement;
-    private Rigidbody RB;
 
-    //private Vector3 savedVelocity = Vector3.zero;
-
-    private SwingerVine swingParent = null;
+    private Vector3 savedVelocity = Vector3.zero;
 
     private Animator anim;
 
     [SerializeField]
     private Transform swingPositionOffset;
 
+    private SwingerVine swingParent = null;
     private Rigidbody rb;
 
-    private float gravity = 3.0f * 9.82f;
-    private float xSpeed = 7.0f;
     private float targetX = 0.0f;
     private float velocityX = 0.0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        RB = rb;
         anim = GetComponentInChildren<Animator>();
     }
 
     public void PlayerHorizontalMovement(InputAction.CallbackContext context)
     {
-
-        targetX = context.ReadValue<float>() * xSpeed;
+        targetX = context.ReadValue<float>() * MyMovementSettings.MovementSpeed;
     }
 
     public void PlayerJump(InputAction.CallbackContext context)
     {
+        if (context.canceled) return;
+
         if (Manager.IsPaused) return;
 
         if (swingParent)
@@ -66,144 +58,40 @@ public class PlayerController : MonoBehaviour
         }
         if (!InAir())
         {
-            rb.velocity = new Vector3(rb.velocity.x, 0.4f * gravity, rb.velocity.z);
+            ApplyJumpForce();
         }
+    }
+
+    private void ApplyJumpForce()
+    { 
+        rb.velocity = new Vector3(rb.velocity.x, 0.4f * gravity, rb.velocity.z);
     }
 
     private void FixedUpdate()
     {
-        velocityX = Mathf.Lerp(velocityX, targetX, 13.0f * Time.fixedDeltaTime);
-        //targetX = Mathf.Lerp(targetX, 0.0f, 0.1f);
-        float g = rb.velocity.y > 0.0f ? gravity : gravity * 1.876f;
+        if (Manager.IsPaused) return;
+
+        float xSpeedMultiplier = 1.0f;
+
+        float velocityY = rb.velocity.y;
         if (swingParent != null)
         {
-            g = 0;
-            rb.velocity = new Vector3(velocityX, 0, rb.velocity.z);
+            xSpeedMultiplier = 0.0f;
+            UpdateSwingPosition(Time.fixedDeltaTime);
         }
         else
-            rb.velocity = new Vector3(velocityX, rb.velocity.y - g * Time.fixedDeltaTime, rb.velocity.z);
+        {
+            float currentGravity = rb.velocity.y > 0.0f ? gravity : gravity * 1.876f;
+            velocityY -= currentGravity * Time.fixedDeltaTime;
+        }
 
+        velocityX = Mathf.Lerp(velocityX, targetX * xSpeedMultiplier, 10.0f * Time.fixedDeltaTime);
+        rb.velocity = new Vector3(velocityX, velocityY, 0f);
 
-        if (anim != null) anim.SetFloat("VelocityX", Mathf.Abs(rb.velocity.x));
+        Debug.Log(rb.velocity);
+        if (anim != null) anim.SetFloat("VelocityX", Mathf.Abs(rb.velocity.x * 0.75f));
         if (anim != null) anim.SetFloat("VelocityY", rb.velocity.y);
-
-
     }
-
-    //private void Start()
-    //{
-    //    anim = GetComponentInChildren<Animator>();
-    //    RB = GetComponent<Rigidbody>();
-    //}
-
-    //public void PlayerHorizontalMovement(InputAction.CallbackContext context)
-    //{
-    //    if (Manager.IsPaused) return;
-
-    //    Direction = context.ReadValue<float>();
-
-    //    if(Direction != 0)
-    //    {
-    //        PressingMovement = true;
-    //    }
-    //    else
-    //    {
-    //        PressingMovement = false;
-    //    }
-
-    //}
-    //public void PlayerJump(InputAction.CallbackContext context)
-    //{
-    //    
-    //    if(!context.ReadValueAsButton())
-    //    {
-    //        PressingJump = false;
-    //        return;
-    //    }
-    //    if(!InAir())
-    //    {
-    //        PressingJump = true;
-    //        RB.useGravity = false;
-    //    }
-    //}
-
-    //private void FixedUpdate()
-    //{
-    //    if (Manager.IsPaused) return;
-    //    var tempMoveSpeed = MyMovementSettings.MovementSpeed;
-    //    if (IsOnSand())
-    //    {
-    //        Debug.Log("i am on sand");
-    //        //currentGravity = Gravity; // You can set this to like 60 in order to get stuck to the floor when doing it but it looks kind of hacky
-    //        tempMoveSpeed *= 2f;
-    //    }
-    //    // else
-    //    // {
-    //    //     currentGravity = Gravity;
-    //    // }
-    //    if (swingParent != null)
-    //    {
-    //        UpdateSwingPosition(Time.fixedDeltaTime);
-    //        RB.useGravity = false;
-    //    }
-
-    //    float movement = 0;
-    //    if (PressingMovement)
-    //    {
-    //        MyMovementSettings.MovementT = Mathf.Min(MyMovementSettings.MovementT + Time.deltaTime, 1);
-    //    }
-    //    else
-    //    {
-    //        MyMovementSettings.MovementT = Mathf.Max(MyMovementSettings.MovementT - (Time.deltaTime * 4), 0);
-    //    }
-
-    //    movement = Direction * MyMovementSettings.Movement.Evaluate(MyMovementSettings.MovementT) * tempMoveSpeed;
-
-    //    float jump = 0;
-    //    float jumpDirection = 0;
-    //    if(MyJumpSettings.JumpT == 1 && !swingParent)
-    //    {
-    //        PressingJump = false;
-    //        MyJumpSettings.JumpT = 0;
-    //        RB.useGravity = true;
-    //    }
-    //    if (PressingJump)
-    //    {
-    //        MyJumpSettings.JumpT = Mathf.Min(MyJumpSettings.JumpT + Time.deltaTime * 2, 1);
-    //        if (MyJumpSettings.JumpT <= 0.5f)
-    //        {
-    //            jumpDirection = 1;
-    //        }
-    //        else
-    //        {
-    //            jumpDirection = -1;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        MyJumpSettings.JumpT = Mathf.Max(MyJumpSettings.JumpT - (Time.deltaTime * 4), 0);
-    //        jumpDirection = -1;
-    //        if (MyJumpSettings.JumpT == 0 && !swingParent)
-    //        {
-    //            RB.useGravity = true;
-    //        }
-    //    }
-
-    //    if(anim != null) anim.SetFloat("VelocityX", Mathf.Abs(RB.velocity.x));
-    //    if(anim != null) anim.SetFloat("VelocityY", RB.velocity.y);
-
-    //    jump = jumpDirection * MyJumpSettings.Jump.Evaluate(MyJumpSettings.JumpT) * MyJumpSettings.JumpHeight;
-
-    //    if(jump > 0)
-    //    {
-    //        RB.AddForce(new Vector3(movement - RB.velocity.x, jump - RB.velocity.y, 0));
-    //    }
-    //    else
-    //    {
-    //        RB.AddForce(new Vector3(movement - RB.velocity.x, 0, 0));
-    //    }
-
-    //}
 
     private void UpdateSwingPosition(float delta)
     {
@@ -230,7 +118,7 @@ public class PlayerController : MonoBehaviour
         return true;
     }
 
-        private bool InAir()
+    private bool InAir()
     {
         Ray ray = new Ray(transform.position + (Vector3.down * transform.lossyScale.y * 1.84f), Vector3.down); //very magical number :))
         RaycastHit hit;
@@ -247,19 +135,19 @@ public class PlayerController : MonoBehaviour
     {
         if (pause)
         {
-            //if (Rb.velocity != Vector3.zero)
-            //{
-            //    savedVelocity = Rb.velocity;
-            //    Rb.velocity = Vector3.zero;
-            //}
+            if (rb.velocity != Vector3.zero)
+            {
+                savedVelocity = rb.velocity;
+                rb.velocity = Vector3.zero;
+            }
         }
         else
         {
-            //if (savedVelocity != Vector3.zero)
-            //{
-            //    Rb.velocity = savedVelocity;
-            //    savedVelocity = Vector3.zero;
-            //}
+            if (savedVelocity != Vector3.zero)
+            {
+                rb.velocity = savedVelocity;
+                savedVelocity = Vector3.zero;
+            }
         }        
     }
 
@@ -273,9 +161,17 @@ public class PlayerController : MonoBehaviour
         if (swingParent != null)
         {
             swingParent.Exit();
-            RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
-            RB.AddForce(swingParent.lerpFlipFlop ? Vector3.right : Vector3.left);
+            float exitBoost = 38f;
+            if (targetX == 0.0)
+            {
+                velocityX = (swingParent.lerpFlipFlop ? 1f : -1f) * exitBoost;
+            }
+            else
+            {
+                velocityX = (targetX > 0 ? 1f : -1f) * exitBoost;
+            }
             swingParent = null;
+            ApplyJumpForce();
         }
     }
 
@@ -292,9 +188,11 @@ public class PlayerController : MonoBehaviour
     [System.Serializable]
     struct MovementSettings
     {
-        public AnimationCurve Movement;
+        //public AnimationCurve Movement;
         public float MovementSpeed;
         //[HideInInspector]
-        public float MovementT;
+        //public float MovementT;
+
+        public float SandBoostMultiplier;
     }
 }
