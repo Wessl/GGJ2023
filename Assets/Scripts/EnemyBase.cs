@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -12,9 +11,12 @@ public class EnemyBase : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            audioSource.clip = soundsToPlayOnHit[Random.Range(0, soundsToPlayOnHit.Length)];
-            audioSource.Play();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if(soundsToPlayOnHit.Length > 0)
+            {
+                audioSource.clip = soundsToPlayOnHit[Random.Range(0, soundsToPlayOnHit.Length)];
+                audioSource.Play();
+            }
+            other.gameObject.GetComponentInChildren<Animator>().SetTrigger("Died");
         }
     }
 }
