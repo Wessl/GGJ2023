@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 8412497509708599719}
   - component: {fileID: 8412497509708599718}
   - component: {fileID: 8412497509708599721}
+  - component: {fileID: 3990141345121550654}
   m_Layer: 0
   m_Name: EnemyStationary
   m_TagString: Untagged
@@ -131,6 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8fc7a5bc4e18a34bb208e718c4de380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundsToPlayOnHit: []
+  audioSource: {fileID: 0}
 --- !u!212 &8412497509708599718
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -217,3 +220,23 @@ PolygonCollider2D:
       - {x: 0.099999994, y: -0.074999996}
       - {x: 0.099999994, y: 0.055}
       - {x: 0.049999997, y: 0.099999994}
+--- !u!95 &3990141345121550654
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8412497509708599720}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cd0a3bad986cec6419109d69e220de39, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -1127,6 +1127,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 2576268191287224457, guid: c96aaffd840b024418bb9077335ffae2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5802bd8009a91b945b8e1223e93b7c16, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c96aaffd840b024418bb9077335ffae2, type: 3}
 --- !u!1001 &203738831
@@ -1539,8 +1543,8 @@ Transform:
   - {fileID: 390312790}
   - {fileID: 1123890762}
   - {fileID: 2082501696}
-  - {fileID: 1930283120}
   - {fileID: 3182885781721857455}
+  - {fileID: 1930283120}
   - {fileID: 676409210}
   m_Father: {fileID: 849506421}
   m_RootOrder: 3
@@ -9943,7 +9947,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 303173248}
-  m_RootOrder: 40
+  m_RootOrder: 39
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &3688509842580209464
 GameObject:
