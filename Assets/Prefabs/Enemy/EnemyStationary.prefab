@@ -95,8 +95,8 @@ GameObject:
   - component: {fileID: 8412497509708599716}
   - component: {fileID: 8412497509708599719}
   - component: {fileID: 8412497509708599718}
-  - component: {fileID: 8412497509708599721}
   - component: {fileID: 3990141345121550654}
+  - component: {fileID: 5423702703862946640}
   m_Layer: 0
   m_Name: EnemyStationary
   m_TagString: Untagged
@@ -186,40 +186,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &8412497509708599721
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8412497509708599720}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.2, y: 0.2}
-    newSize: {x: 0.2, y: 0.2}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.049999997, y: 0.099999994}
-      - {x: -0.099999994, y: 0.044999998}
-      - {x: -0.099999994, y: -0.03}
-      - {x: -0.074999996, y: -0.085}
-      - {x: -0.065, y: -0.099999994}
-      - {x: 0.06, y: -0.099999994}
-      - {x: 0.099999994, y: -0.074999996}
-      - {x: 0.099999994, y: 0.055}
-      - {x: 0.049999997, y: 0.099999994}
 --- !u!95 &3990141345121550654
 Animator:
   serializedVersion: 4
@@ -240,3 +206,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &5423702703862946640
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8412497509708599720}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.33, y: 1.72, z: 0.2}
+  m_Center: {x: 0, y: 0.82, z: 0}

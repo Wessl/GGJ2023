@@ -16,7 +16,12 @@ public class EnemyBase : MonoBehaviour
                 audioSource.clip = soundsToPlayOnHit[Random.Range(0, soundsToPlayOnHit.Length)];
                 audioSource.Play();
             }
-            other.gameObject.GetComponentInChildren<Animator>().SetTrigger("Died");
+            Animator animator = other.gameObject.GetComponentInChildren<Animator>();
+            if(!animator.GetBool("Dead"))
+            {
+                other.gameObject.GetComponentInChildren<Animator>().SetTrigger("Died");
+                other.gameObject.GetComponentInChildren<Animator>().SetBool("Dead", true);
+            }
         }
     }
 }
