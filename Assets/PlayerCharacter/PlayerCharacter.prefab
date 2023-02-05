@@ -326,7 +326,7 @@ MonoBehaviour:
     InAirTestOffset: 0.2
   MyMovementSettings:
     MovementSpeed: 7
-    SandBoostMultiplier: 1.4
+    SandBoostMultiplier: 2
   gravity: 29.46
   onSandLayerMaskTest:
     serializedVersion: 2

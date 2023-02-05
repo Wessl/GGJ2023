@@ -72,6 +72,10 @@ public class PlayerController : MonoBehaviour
         if (Manager.IsPaused) return;
 
         float xSpeedMultiplier = 1.0f;
+        if (IsOnSand())
+        {
+            xSpeedMultiplier = MyMovementSettings.SandBoostMultiplier;
+        }
 
         float velocityY = rb.velocity.y;
         if (swingParent != null)
@@ -115,7 +119,8 @@ public class PlayerController : MonoBehaviour
         {
             return hit.distance > 0;
         }
-        return true;
+
+        return false;
     }
 
     private bool InAir()
