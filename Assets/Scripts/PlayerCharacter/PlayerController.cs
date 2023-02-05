@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviour
         if (swingParent != null)
         {
             swingParent.Exit();
-            float exitBoost = 38f;
+            float exitBoost = 24f;
             if (targetX == 0.0)
             {
                 velocityX = (swingParent.lerpFlipFlop ? 1f : -1f) * exitBoost;
