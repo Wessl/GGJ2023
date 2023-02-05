@@ -92,7 +92,6 @@ public class PlayerController : MonoBehaviour
         velocityX = Mathf.Lerp(velocityX, targetX * xSpeedMultiplier, 10.0f * Time.fixedDeltaTime);
         rb.velocity = new Vector3(velocityX, velocityY, 0f);
 
-        Debug.Log(rb.velocity);
         if (anim != null) anim.SetFloat("VelocityX", Mathf.Abs(rb.velocity.x * 0.75f));
         if (anim != null) anim.SetFloat("VelocityY", rb.velocity.y);
     }
