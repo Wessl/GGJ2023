@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
     private float targetX = 0.0f;
     private float velocityX = 0.0f;
 
+    public GameObject pauseEffect;
+
     private SpriteRenderer FlipSprite;
 
     void Start()
@@ -72,7 +74,14 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Manager.IsPaused) return;
+        if (Manager.IsPaused)
+        {
+            if (swingParent != null)
+            {
+                UpdateSwingPosition(Time.fixedDeltaTime);
+            }
+            return;
+        } 
 
         if (targetX < 0.0f)
         {
@@ -151,6 +160,7 @@ public class PlayerController : MonoBehaviour
     {
         if (pause)
         {
+            pauseEffect.SetActive(true);
             if (rb.velocity != Vector3.zero)
             {
                 savedVelocity = rb.velocity;
@@ -159,6 +169,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            pauseEffect.SetActive(false);
             if (savedVelocity != Vector3.zero)
             {
                 rb.velocity = savedVelocity;

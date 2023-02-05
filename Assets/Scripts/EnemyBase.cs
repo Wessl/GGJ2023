@@ -11,8 +11,12 @@ public class EnemyBase : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            audioSource.clip = soundsToPlayOnHit[Random.Range(0, soundsToPlayOnHit.Length)];
-            audioSource.Play();
+            if(soundsToPlayOnHit.Length > 0)
+            {
+                audioSource.clip = soundsToPlayOnHit[Random.Range(0, soundsToPlayOnHit.Length)];
+                audioSource.Play();
+            }
+            other.gameObject.GetComponentInChildren<Animator>().SetTrigger("Died");
         }
     }
 }
