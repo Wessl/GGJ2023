@@ -246,6 +246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2229785298031883649}
   - component: {fileID: 2229785298031883678}
+  - component: {fileID: 439440040078014281}
   m_Layer: 5
   m_Name: Acorn
   m_TagString: Untagged
@@ -263,7 +264,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2229785298503437944}
   - {fileID: 2229785297878650905}
@@ -288,6 +289,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tmpro: {fileID: 2229785297878650902}
+--- !u!95 &439440040078014281
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2229785298031883648}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: efcaf304d6f8c1c48afb53468be0f778, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2229785298503437947
 GameObject:
   m_ObjectHideFlags: 0

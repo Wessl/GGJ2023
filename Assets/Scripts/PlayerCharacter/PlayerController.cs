@@ -34,10 +34,13 @@ public class PlayerController : MonoBehaviour
     private float targetX = 0.0f;
     private float velocityX = 0.0f;
 
+    private SpriteRenderer FlipSprite;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+        FlipSprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     public void PlayerHorizontalMovement(InputAction.CallbackContext context)
@@ -71,7 +74,20 @@ public class PlayerController : MonoBehaviour
     {
         if (Manager.IsPaused) return;
 
+        if (targetX < 0.0f)
+        {
+            FlipSprite.flipX = true;
+        }
+        else if (targetX > 0.0f)
+        { 
+            FlipSprite.flipX = false;
+        }
+
         float xSpeedMultiplier = 1.0f;
+        if (IsOnSand())
+        {
+            xSpeedMultiplier = MyMovementSettings.SandBoostMultiplier;
+        }
 
         float velocityY = rb.velocity.y;
         if (swingParent != null)
@@ -88,7 +104,6 @@ public class PlayerController : MonoBehaviour
         velocityX = Mathf.Lerp(velocityX, targetX * xSpeedMultiplier, 10.0f * Time.fixedDeltaTime);
         rb.velocity = new Vector3(velocityX, velocityY, 0f);
 
-        Debug.Log(rb.velocity);
         if (anim != null) anim.SetFloat("VelocityX", Mathf.Abs(rb.velocity.x * 0.75f));
         if (anim != null) anim.SetFloat("VelocityY", rb.velocity.y);
     }
@@ -115,7 +130,8 @@ public class PlayerController : MonoBehaviour
         {
             return hit.distance > 0;
         }
-        return true;
+
+        return false;
     }
 
     private bool InAir()
