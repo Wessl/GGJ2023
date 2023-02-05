@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        RB = rb;
         anim = GetComponentInChildren<Animator>();
     }
 
@@ -56,7 +57,14 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerJump(InputAction.CallbackContext context)
     {
-        if(!InAir())
+        if (Manager.IsPaused) return;
+
+        if (swingParent)
+        {
+            ExitSwing();
+            return;
+        }
+        if (!InAir())
         {
             rb.velocity = new Vector3(rb.velocity.x, 0.4f * gravity, rb.velocity.z);
         }
@@ -67,7 +75,13 @@ public class PlayerController : MonoBehaviour
         velocityX = Mathf.Lerp(velocityX, targetX, 13.0f * Time.fixedDeltaTime);
         //targetX = Mathf.Lerp(targetX, 0.0f, 0.1f);
         float g = rb.velocity.y > 0.0f ? gravity : gravity * 1.876f;
-        rb.velocity = new Vector3(velocityX, rb.velocity.y - g * Time.fixedDeltaTime, rb.velocity.z);
+        if (swingParent != null)
+        {
+            g = 0;
+            rb.velocity = new Vector3(velocityX, 0, rb.velocity.z);
+        }
+        else
+            rb.velocity = new Vector3(velocityX, rb.velocity.y - g * Time.fixedDeltaTime, rb.velocity.z);
 
 
         if (anim != null) anim.SetFloat("VelocityX", Mathf.Abs(rb.velocity.x));
@@ -100,13 +114,7 @@ public class PlayerController : MonoBehaviour
     //}
     //public void PlayerJump(InputAction.CallbackContext context)
     //{
-    //    if (Manager.IsPaused) return;
-
-    //    if (swingParent)
-    //    {
-    //        ExitSwing();
-    //        return;
-    //    }
+    //    
     //    if(!context.ReadValueAsButton())
     //    {
     //        PressingJump = false;
