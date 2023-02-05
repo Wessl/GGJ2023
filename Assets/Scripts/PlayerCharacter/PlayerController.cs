@@ -34,10 +34,13 @@ public class PlayerController : MonoBehaviour
     private float targetX = 0.0f;
     private float velocityX = 0.0f;
 
+    private SpriteRenderer FlipSprite;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+        FlipSprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     public void PlayerHorizontalMovement(InputAction.CallbackContext context)
@@ -70,6 +73,15 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if (Manager.IsPaused) return;
+
+        if (targetX < 0.0f)
+        {
+            FlipSprite.flipX = true;
+        }
+        else if (targetX > 0.0f)
+        { 
+            FlipSprite.flipX = false;
+        }
 
         float xSpeedMultiplier = 1.0f;
         if (IsOnSand())
