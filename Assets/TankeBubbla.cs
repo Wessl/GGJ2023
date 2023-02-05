@@ -32,7 +32,7 @@ public class TankeBubbla : MonoBehaviour
         for (int i = 0; i < letters.Length; i++)
         {
             tmpro.text += tmpro_text[i];
-            yield return new WaitForSeconds(delayBetweenAppearance/10f);
+            yield return new WaitForSeconds(delayBetweenAppearance/16f);
         }
 
         yield return new WaitForSeconds(1f);
