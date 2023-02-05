@@ -7,6 +7,15 @@ public class SwingerVine : MonoBehaviour
     private float angle = 0.0f;
     [HideInInspector]
     public bool lerpFlipFlop = true;
+
+    [SerializeField]
+    private float smoothSwingRangeStart = 25.0f;
+
+    [SerializeField]
+    private float smoothSwingRangeHoldingPlayer = 50.0f;
+
+
+
     private float smoothSwingRange = 25.0f;
 
 
@@ -34,7 +43,7 @@ public class SwingerVine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        smoothSwingRange = smoothSwingRangeStart;
     }
 
     // Update is called once per frame
@@ -61,13 +70,13 @@ public class SwingerVine : MonoBehaviour
             }
         }
 
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        transform.localRotation = Quaternion.Euler(0, 0, angle);
 
 
         if (!collider.enabled && exitTime + exitDuration <= Time.time && exitTime > 0.0f)
         {
             collider.enabled = true;
-            smoothSwingRange = 25;
+            smoothSwingRange = smoothSwingRangeStart;
             smoothSwingSpeedScale = 3.2f;
             exitTime = -10.0f;
         }
@@ -88,7 +97,7 @@ public class SwingerVine : MonoBehaviour
     private void StartSwing(PlayerController player)
     {
         collider.enabled = false;
-        smoothSwingRange = 50;
+        smoothSwingRange = smoothSwingRangeHoldingPlayer;
         smoothSwingSpeedScale = 6;
         player.EnterSwing(this);
 
@@ -102,7 +111,7 @@ public class SwingerVine : MonoBehaviour
 
             Vector3 offset = p - transform.position;
 
-            float dist = -Vector3.Dot(transform.rotation * Vector3.down, offset);
+            float dist = Mathf.Min(-Vector3.Dot(transform.rotation * Vector3.down, offset), -2.8f);
 
             collisionPivot.localPosition = new Vector3(collisionPivot.localPosition.x, dist, collisionPivot.localPosition.z);
 

@@ -34,7 +34,12 @@ public class PlayerController : MonoBehaviour
     private float targetX = 0.0f;
     private float velocityX = 0.0f;
 
+    public GameObject pauseEffect;
+
     private SpriteRenderer FlipSprite;
+
+    float xSpeedMultiplier = 1.0f;
+    float targetXSpeedMultiplier = 1.0f;
 
     void Start()
     {
@@ -72,7 +77,14 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Manager.IsPaused) return;
+        if (Manager.IsPaused)
+        {
+            if (swingParent != null)
+            {
+                UpdateSwingPosition(Time.fixedDeltaTime);
+            }
+            return;
+        } 
 
         if (targetX < 0.0f)
         {
@@ -83,16 +95,18 @@ public class PlayerController : MonoBehaviour
             FlipSprite.flipX = false;
         }
 
-        float xSpeedMultiplier = 1.0f;
+
+        targetXSpeedMultiplier = 1.0f;
         if (IsOnSand())
         {
-            xSpeedMultiplier = MyMovementSettings.SandBoostMultiplier;
+            targetXSpeedMultiplier = MyMovementSettings.SandBoostMultiplier;
         }
 
         float velocityY = rb.velocity.y;
         if (swingParent != null)
         {
             xSpeedMultiplier = 0.0f;
+            targetXSpeedMultiplier = 0.0f;
             UpdateSwingPosition(Time.fixedDeltaTime);
         }
         else
@@ -101,6 +115,8 @@ public class PlayerController : MonoBehaviour
             velocityY -= currentGravity * Time.fixedDeltaTime;
         }
 
+
+        xSpeedMultiplier = Mathf.Lerp(xSpeedMultiplier, targetXSpeedMultiplier, 3.0f * Time.fixedDeltaTime);
         velocityX = Mathf.Lerp(velocityX, targetX * xSpeedMultiplier, 10.0f * Time.fixedDeltaTime);
         rb.velocity = new Vector3(velocityX, velocityY, 0f);
 
@@ -151,6 +167,7 @@ public class PlayerController : MonoBehaviour
     {
         if (pause)
         {
+            pauseEffect.SetActive(true);
             if (rb.velocity != Vector3.zero)
             {
                 savedVelocity = rb.velocity;
@@ -159,6 +176,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            pauseEffect.SetActive(false);
             if (savedVelocity != Vector3.zero)
             {
                 rb.velocity = savedVelocity;
@@ -177,7 +195,7 @@ public class PlayerController : MonoBehaviour
         if (swingParent != null)
         {
             swingParent.Exit();
-            float exitBoost = 38f;
+            float exitBoost = 24f;
             if (targetX == 0.0)
             {
                 velocityX = (swingParent.lerpFlipFlop ? 1f : -1f) * exitBoost;
