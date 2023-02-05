@@ -9,9 +9,20 @@ public class AudioManager : MonoBehaviour
     private float timeSinceLastPlay;
     [SerializeField] private float timeDelayForSoundCombo;
     private int audioClipIndex;
+
+    private static AudioManager me = null;
     // Start is called before the first frame update
     void Start()
     {
+        if (AudioManager.me)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            me = this;
+        }
         audioClipIndex = 0;
     }
 

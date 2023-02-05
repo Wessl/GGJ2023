@@ -10,6 +10,8 @@ public class AcornDisplay : MonoBehaviour
 
     private Animator anim;
 
+    public static AcornDisplay me = null;
+
     private void Awake()
     {
         Debug.Log("not destroying what ? ");
@@ -19,7 +21,16 @@ public class AcornDisplay : MonoBehaviour
 
     public void Start()
     {
-        
+        if (AcornDisplay.me)
+        {
+            gameObject.SetActive(false);
+            Destroy(gameObject.transform.parent.gameObject);
+            return;
+        }
+        else
+        {
+            me = this;
+        }
         anim = GetComponent<Animator>();
     }
 

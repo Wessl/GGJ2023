@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,8 @@ public class Manager : MonoBehaviour
 {
     [SerializeField]
     private static PlayerController player;
+
+    private static Manager me = null;
 
     private static bool isPaused = false;
     public static bool IsPaused
@@ -23,6 +26,16 @@ public class Manager : MonoBehaviour
 
     private void Start()
     {
+        if (Manager.me)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            me = this;
+        }
+           
         if (player == null) player = FindObjectOfType<PlayerController>();
     }
     
