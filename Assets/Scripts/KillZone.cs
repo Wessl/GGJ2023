@@ -8,6 +8,7 @@ public class KillZone : MonoBehaviour
     {
         if (other && other.gameObject.layer == LayerMask.NameToLayer("Player")) 
         {
+            Destroy(GameObject.FindGameObjectWithTag("Manager"));
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
