@@ -11,6 +11,10 @@ public class Manager : MonoBehaviour
     private static Manager me = null;
 
     private static bool isPaused = false;
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     public static bool IsPaused
     {
         get
