@@ -10,8 +10,16 @@ public class AcornDisplay : MonoBehaviour
 
     private Animator anim;
 
+    private void Awake()
+    {
+        Debug.Log("not destroying what ? ");
+        Debug.Log(this.transform.parent.name);
+        DontDestroyOnLoad(this.transform.parent.parent);
+    }
+
     public void Start()
     {
+        
         anim = GetComponent<Animator>();
     }
 
