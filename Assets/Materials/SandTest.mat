@@ -40,9 +40,9 @@ Material:
     - _QueueOffset: 0
     m_Colors:
     - _HighLightColor: {r: 0.7924528, g: 0.317213, b: 0, a: 0}
-    - _HighLightTint: {r: 0.7735849, g: 0.4697825, b: 0, a: 0}
-    - _Higher_Ground_Colour: {r: 0.726501, g: 0.745283, b: 0, a: 0}
-    - _Lower_Ground_Colour: {r: 0.6792453, g: 0.57839453, b: 0, a: 1}
+    - _HighLightTint: {r: 2.038769, g: 1.2418897, b: 0, a: 0}
+    - _Higher_Ground_Colour: {r: 0.36358288, g: 0.37211767, b: 0, a: 0}
+    - _Lower_Ground_Colour: {r: 0.22250526, g: 0.191458, b: 0, a: 1}
     - _Second_Higher_Ground_Colour: {r: 0.005271926, g: 0.1792453, b: 0, a: 0}
     - _Second_Lower_Ground_Colour: {r: 0.1143664, g: 0.02389747, b: 0, a: 1}
   m_BuildTextureStacks: []
