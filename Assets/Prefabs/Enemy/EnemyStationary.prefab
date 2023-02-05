@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 8412497509708599718}
   - component: {fileID: 3990141345121550654}
   - component: {fileID: 5423702703862946640}
+  - component: {fileID: 9185615448888904455}
   m_Layer: 0
   m_Name: EnemyStationary
   m_TagString: Untagged
@@ -219,3 +220,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.33, y: 1.72, z: 0.2}
   m_Center: {x: 0, y: 0.82, z: 0}
+--- !u!114 &9185615448888904455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8412497509708599720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b68edf2aa191e54eb1ed34fe6db317a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smoothSwingRange: 5
+  smoothSwingSpeedScale: 4
+  smoothSwingMaxSpeed: 4
+  flipFlopThreashold: 1
