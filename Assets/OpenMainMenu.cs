@@ -16,7 +16,7 @@ public class OpenMainMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (elapsed + 20.0f <= Time.time)
+        if (elapsed + 15.0f <= Time.time)
         {
             SceneManager.LoadScene("MainMenu");
         }
