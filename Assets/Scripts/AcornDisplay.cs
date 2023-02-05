@@ -16,7 +16,7 @@ public class AcornDisplay : MonoBehaviour
     {
         Debug.Log("not destroying what ? ");
         Debug.Log(this.transform.parent.name);
-        DontDestroyOnLoad(this.transform.parent.parent);
+        DontDestroyOnLoad(this.transform.parent);
     }
 
     public void Start()
