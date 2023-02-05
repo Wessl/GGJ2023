@@ -1784,7 +1784,8 @@ PrefabInstance:
       propertyPath: pauseEffect
       value: 
       objectReference: {fileID: 1656850164}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2204888958611683186, guid: c96aaffd840b024418bb9077335ffae2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c96aaffd840b024418bb9077335ffae2, type: 3}
 --- !u!1001 &203738831
 PrefabInstance:
