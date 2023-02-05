@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b68edf2aa191e54eb1ed34fe6db317a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothSwingRange: 8
+  smoothSwingRange: 12
   smoothSwingSpeedScale: 6
-  smoothSwingMaxSpeed: 4
+  smoothSwingMaxSpeed: 5
   flipFlopThreashold: 1
